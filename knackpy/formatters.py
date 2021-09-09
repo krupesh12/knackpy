@@ -102,8 +102,6 @@ def date_time(value, timezone=datetime.timezone.utc):
         dt_utc =  pytz.utc.localize(datetime.datetime(1970, 1, 1) + datetime.timedelta(seconds=timestamp))
     else:
         dt_utc = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc)
-    print(dt_utc)
-    print(timezone)
     dt_local = dt_utc.astimezone(timezone)
     return dt_local.isoformat()
 
