@@ -97,11 +97,14 @@ def date_time(value, timezone=datetime.timezone.utc):
     mills_timestamp = value.get("unix_timestamp")
     if len(str(mills_timestamp)) > 15:
         return None
-    timestamp = mills_timestamp / 1000
-    if timestamp < 0:
-        dt_utc =  pytz.utc.localize(datetime.datetime(1970, 1, 1) + datetime.timedelta(seconds=timestamp))
-    else:
-        dt_utc = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc)
+    try:
+        timestamp = mills_timestamp / 1000
+        if timestamp < 0:
+            dt_utc = pytz.utc.localize(datetime.datetime(1970, 1, 1) + datetime.timedelta(seconds=timestamp))
+        else:
+            dt_utc = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc)
+    except Exception as e:
+        return None
     dt_local = dt_utc.astimezone(timezone)
     return dt_local.isoformat()
 
